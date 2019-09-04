@@ -3,3 +3,6 @@ Referensi:
 1. Computation of GSD in 2D and 3D binary images
 Author : Nattavadee Srisutthiyakorn dan Gary Mavko
 url : https://www.sciencedirect.com/science/article/pii/S0098300418307052?via%3Dihub
+2. Comparison of laser grain size analysis with pipette and sieve analysis: a solution for the underestimation of the clay fraction
+Author :MARTIN KONERT dan JEF VANDENBERGHE 
+url : https://pdfs.semanticscholar.org/7965/94b2661439caa9d3707ca7b0a5972c0e8f46.pdf
