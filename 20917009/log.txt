@@ -2,3 +2,8 @@ Achmad Maulana Gani
 
 [29 Agustus 2019]
 Berkas log.txt telah dibuat
+
+[4 Agustus 2019]
+Referensi awal untuk pembuatan modul
+1. A. Géron, Hands-On Machine Learning with Scikit-Learn and TensorFlow, Kindle Edition, 1st, 450 pages 
+2. E. Birbeck, How To Build a Neural Network to Recognize Handwritten Digits with TensorFlow, artikel website, https://www.digitalocean.com/community/tutorials/how-to-build-a-neural-network-to-recognize-handwritten-digits-with-tensorflow
