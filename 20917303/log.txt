@@ -1,1 +1,5 @@
 Hilmy Aliy Andra Putra 
+Referensi:
+1. Computation of GSD in 2D and 3D binary images
+Author : Nattavadee Srisutthiyakorn dan Gary Mavko
+url : https://www.sciencedirect.com/science/article/pii/S0098300418307052?via%3Dihub
