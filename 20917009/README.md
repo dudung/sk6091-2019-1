@@ -1,2 +1,25 @@
 # Pengenalan Neural Network dengan Python
 [Achmad Maulana Gani](https://github.com/masgani)
+
+Update Log:
+
+[29 Agustus 2019]
+Berkas log.txt telah dibuat
+
+[4 Agustus 2019]
+Referensi awal untuk pembuatan modul
+1. A. Géron, Hands-On Machine Learning with Scikit-Learn and TensorFlow, Kindle Edition, 1st, 450 pages 
+2. E. Birbeck, How To Build a Neural Network to Recognize Handwritten Digits with TensorFlow, artikel website, https://www.digitalocean.com/community/tutorials/how-to-build-a-neural-network-to-recognize-handwritten-digits-with-tensorflow
+
+[30 September 2019]
+- Modul telah dibuat dengan menggunakan file latex dan sedang dalam proses penulisan
+- Urutan daftar isi sementara yang dibuat :
+  1. Pendahuluan : berisi sejarah singkat dan latar belakang mengenai pengembangan neural network 
+  2. Teori Neural Network : tinjauan pustaka mengenai neural network
+  3. Tutorial Neural Network dengan Python : kumpulan tutorial python untuk neural network
+  Appendix 1. Tutorial dasar-dasar python (optional)
+  
+[5 Oktober 2019]
+- Perubahan topik Penelitian Mandiri menjadi "Prediksi Indeks Harga Saham dengan Recurrent Neural Network"
+- Software yang digunakan dalam implementasi menggunakan Python
+- Implementasi telah selesai dan di upload dalam folder code
