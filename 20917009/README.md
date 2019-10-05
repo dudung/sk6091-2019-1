@@ -1,4 +1,4 @@
-# Pengenalan Neural Network dengan Python
+# Prediksi Indeks Harga Saham dengan Recurrent Neural Network
 [Achmad Maulana Gani](https://github.com/masgani)
 
 Update Log:
