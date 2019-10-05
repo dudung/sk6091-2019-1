@@ -1,3 +1,12 @@
+###########################################################################################
+# Title : Prediksi Indeks Harga Saham dengan menggunakan Recurrent Neural Network
+# Author: Achmad M. Gani
+# Aims  : 1. Menerapkan metode neural network berbasis time series dengan program Python
+#	  2. Meramal harga indeks saham di masa depan
+# Input	: Matriks dengan dimensi m x n dan merupakan fungsi time series 
+# Output: Grafik dan variabel dengan tipe data list berisi nilai prediksi terhadap waktu  
+#
+############################################################################################
 import statistics
 import pandas as pd
 from sklearn.metrics import mean_squared_error
