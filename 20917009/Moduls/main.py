@@ -3,163 +3,124 @@
 # Author	: Achmad M. Gani
 # Aims  	: 1. Menerapkan metode neural network berbasis time series dengan program Python
 #	          2. Meramal harga indeks saham di masa depan
-# Input		: Matriks dengan dimensi m x n dan merupakan fungsi time series 
-# Output	: Grafik dan variabel dengan tipe data list berisi nilai prediksi terhadap waktu  
+# Input		: Matriks dengan dimensi m x n dan merupakan fungsi time series
+# Output	: Grafik dan variabel dengan tipe data list berisi nilai prediksi terhadap waktu
 # Outline Code	: 1. Header
 #		  2. Definisi Fungsi
 #		  3. Algorithma
 #		  4. Prediksi / Forecasting
 ############################################################################################
-import statistics
+#-------------------HEADER-----------------
 import pandas as pd
-from sklearn.metrics import mean_squared_error
 from sklearn.preprocessing import MinMaxScaler
-import tensorflow as tf
-import keras
-from numpy import array
+from sklearn.model_selection import train_test_split
+from keras import optimizers
 from keras.models import Sequential
 from keras.layers import Dense
 from keras.layers import LSTM
-from math import sqrt
-import matplotlib.pyplot as plt
-import matplotlib.dates as mdates
-import seaborn as sns
-import numpy
+from keras.layers import Dropout
 import numpy as np
-from sklearn.model_selection import train_test_split
-from sklearn.model_selection import TimeSeriesSplit
+import matplotlib.pyplot as plt
+from sklearn.metrics import mean_squared_error
 
-#predefine the function
-# frame a sequence as a supervised learning problem
-# this methods will create a column and column value will be 1 shift from the data.
-# it will make our data to supervised so that we can feed into network
-def timeseries_to_supervised(data, lag=1):
-	df = pd.DataFrame(data)
-	columns = [df.shift(i) for i in range(1, lag+1)]
-	columns.append(df)
-	df = pd.concat(columns, axis=1)
-	df.fillna(0, inplace=True)
-	return df
+#------------------ PREDEFINE THE FUNCTIONS ---------------
 
-# create a differenced series
-def difference(dataset, interval=1):
-	diff = list()
-	for i in range(interval, len(dataset)):
-		value = dataset[i] - dataset[i - interval]
-		diff.append(value)
-	return array(diff)
+def build_timeseries(mat, y_col_index):
+    TIME_STEPS = 3
+    dim_0 = mat.shape[0] - TIME_STEPS
+    dim_1 = mat.shape[1]
+    x = np.zeros((dim_0, TIME_STEPS, dim_1))
+    y = np.zeros((dim_0,))
 
-# invert differenced value
-def inverse_difference(history, yhat, interval=1):
-	return yhat + history[-interval]
+    for i in range(dim_0):
+        x[i] = mat[i:TIME_STEPS+i]
+        y[i] = mat[TIME_STEPS+i, y_col_index]
+    print("length of time-series", x.shape, y.shape)
+    return x, y
 
-# scale train and test data to [-1, 1]
-def scale(train, test):
-	# fit scaler
-	scaler = MinMaxScaler(feature_range=(-1, 1))
-	scaler = scaler.fit(train)
-	# transform train
-	train = train.reshape(train.shape[0], train.shape[1])
-	train_scaled = scaler.transform(train)
-	# transform test
-	test = test.reshape(test.shape[0], test.shape[1])
-	test_scaled = scaler.transform(test)
-	return scaler, train_scaled, test_scaled
-
-# inverse scaling for a forecasted value
-def invert_scale(scaler, X, value):
-	new_row = [x for x in X] + [value]
-	array = numpy.array(new_row)
-	array = array.reshape(1, len(array))
-	inverted = scaler.inverse_transform(array)
-	return inverted[0, -1]
-
-# fit an LSTM network to training data
-def fit_lstm(train, batch_size, nb_epoch, neurons):
-	X, y = train[:, 0:-1], train[:, -1]
-	X = X.reshape(X.shape[0], 1, X.shape[1])
-	model = Sequential()
-	model.add(LSTM(neurons, batch_input_shape=(batch_size, X.shape[1], X.shape[2]), stateful=True))
-	model.add(Dense(1))
-	model.compile(loss='mean_squared_error', optimizer='adam')
-	for i in range(nb_epoch):
-		model.fit(X, y, epochs=1, batch_size=batch_size, verbose=0, shuffle=False)
-		model.reset_states()
-	return model
-
-# make a one-step forecast
-def forecast_lstm(model, batch_size, X):
-	X = X.reshape(1, 1, len(X))
-	yhat = model.predict(X, batch_size=batch_size, verbose=0)
-	return yhat[0,0]
-
-
-# split a univariate sequence into samples
-def split_sequence(sequence, n_steps):
-	X, y = list(), list()
-	for i in range(len(sequence)):
-		# find the end of this pattern
-		end_ix = i + n_steps
-		# check if we are beyond the sequence
-		if end_ix > len(sequence)-1:
-			break
-		# gather input and output parts of the pattern
-		seq_x, seq_y = sequence[i:end_ix], sequence[end_ix]
-		X.append(seq_x)
-		y.append(seq_y)
-	return array(X), array(y)
-
+def trim_dataset(mat, batch_size):
+    no_of_rows = mat.shape[0]% batch_size
+    if(no_of_rows > 0) :
+        return mat[:-no_of_rows]
+    else:
+        return mat
 #--------------------------------------- ALGORITHMS ------------------------
-#load the data
-stock_time_series = pd.read_csv('../Dataset/JKSE5y.csv')
+#load the data and prepare the constants
+BATCH_SIZE = 10
+PATH = '../Dataset/JKSEMax.csv'
+stock_time_series = pd.read_csv(PATH)
+
+#------ Preprocessing -----
 # drop null values in "Close"
 stock_time_series = stock_time_series.dropna(subset=['Close'])
 
-#prepare data of column "Close"
-stock_close = stock_time_series.set_index('Date').dropna().Close
+train_cols = ["Open", "High", "Low", "Close", "Volume"]
+df_train, df_test = train_test_split(stock_time_series, train_size=0.8, test_size=0.2, shuffle=False)
+print("Train and Test size", len(df_train), len(df_test))
 
-# convert our column to pandas series
-series = pd.Series(stock_close)
-# transform data to be stationary and differencing
-raw_values = series.values
-raw = raw_values.tolist()
-diff = difference(raw,1)
+#normalization
+x = df_train.loc[:, train_cols].values
+scaler = MinMaxScaler()
+x_train = scaler.fit_transform(x)
+x_test = scaler.transform(df_test.loc[:, train_cols])
 
-# choose a number of time steps
-n_steps = 5
-# split into samples
-X, y = split_sequence(diff, n_steps)
-# reshape from [samples, timesteps] into [samples, timesteps, features]
-n_features = 1
-X = X.reshape((X.shape[0], X.shape[1], n_features))
+#turn into supervised learning
+x_t, y_t = build_timeseries(x_train, 3)
+x_t, y_t = trim_dataset(x_t, BATCH_SIZE), trim_dataset(y_t, BATCH_SIZE)
+x_temp, y_temp = build_timeseries(x_test, 3)
+x_val, x_test_t = np.split(trim_dataset(x_temp, BATCH_SIZE), 2)
+y_val, y_test_t = np.split(trim_dataset(y_temp, BATCH_SIZE), 2)
 
-# define model
-model = Sequential()
-model.add(LSTM(50, activation='relu', input_shape=(n_steps, n_features)))
-model.add(Dense(1))
-model.compile(optimizer='adam', loss='mse')
-# fit model
-model.fit(X, y, epochs=200, verbose=0)
+#Build the model
 
+lstm_model = Sequential()
+lstm_model.add(LSTM(100, batch_input_shape=(BATCH_SIZE, 3, x_t.shape[2]), dropout=0.0, recurrent_dropout=0.0, stateful= True, kernel_initializer='random_uniform'))
+lstm_model.add(Dropout(0.02))
+#lstm_model.add(Dense(20, activation='relu'))
+lstm_model.add(Dense(1, activation='linear'))
+optimizer = optimizers.RMSprop(lr=0.00008)
+lstm_model.compile(loss='mean_squared_error', optimizer=optimizer)
 
-#------------------------------FORECASTING ----------------------------------------
-#prediction
-test = list()
-for l in range(n_steps+1):
-	test.append(raw[-n_steps+l-1])
+history = lstm_model.fit(x_t, y_t, epochs=40, verbose=2, batch_size=BATCH_SIZE,
+                    shuffle=False, validation_data=(trim_dataset(x_val, BATCH_SIZE),
+                    trim_dataset(y_val, BATCH_SIZE)))
 
-for i in range(10):
-	predict = list()
-	for m in range(n_steps+1):
-		predict.append(test[m+i])
-	predict = array(predict)
-	predict = difference(predict,1)
-	predict = predict.reshape((1, n_steps, n_features))
-	yhat = model.predict(predict, verbose=0)
-	test.append(test[i+n_steps]+yhat.tolist()[0][0])
+# predict the test data
+y_pred = lstm_model.predict(trim_dataset(x_test_t, BATCH_SIZE), batch_size=BATCH_SIZE)
+y_pred = y_pred.flatten()
+y_test_t = trim_dataset(y_test_t, BATCH_SIZE)
+error = mean_squared_error(y_test_t, y_pred)
+print("Error is", error, y_pred.shape, y_test_t.shape)
+print(y_pred[0:15])
+print(y_test_t[0:15])
 
-# line plot of observed vs predicted
-plt.figure(figsize=(15, 10))
-plt.plot(test)
-plt.title('predicted data', fontsize=18)
+# convert the predicted value to range of real data
+y_pred_org = (y_pred * scaler.data_range_[3]) + scaler.data_min_[3]
+# min_max_scaler.inverse_transform(y_pred)
+y_test_t_org = (y_test_t * scaler.data_range_[3]) + scaler.data_min_[3]
+# min_max_scaler.inverse_transform(y_test_t)
+print(y_pred_org[0:15])
+print(y_test_t_org[0:15])
+
+# Visualize the prediction
+plt.figure()
+plt.plot(y_pred_org)
+plt.plot(y_test_t_org)
+plt.title('Prediksi vs Harga Asli')
+plt.ylabel('Harga')
+plt.xlabel('Hari')
+plt.legend(['Prediksi', 'Asli'], loc='upper left')
 plt.show()
+
+#Visualize the val_loss and loss
+"""
+plt.figure()
+plt.plot(history.history['loss'])
+plt.plot(history.history['val_loss'])
+plt.title('Training & Validation Loss')
+plt.ylabel('Loss')
+plt.xlabel('Epoch')
+plt.legend(['Training Loss', 'Validation Loss'], loc='upper right')
+plt.show()
+"""
+#forecasting attempt
