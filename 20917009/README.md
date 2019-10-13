@@ -23,3 +23,7 @@ Referensi awal untuk pembuatan modul
 - Perubahan topik Penelitian Mandiri menjadi "Prediksi Indeks Harga Saham dengan Recurrent Neural Network"
 - Software yang digunakan dalam implementasi menggunakan PyCharm IDE berbasis Python
 - Implementasi telah selesai dan di upload dalam folder Moduls
+
+[13 Oktober 2019]
+- penambahan fitur-fitur dalam algoritma untuk optimasi dan penambahan akurasi
+- Penulisan modul dengan menggunakan latex
