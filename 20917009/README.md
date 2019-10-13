@@ -1,7 +1,11 @@
 # Prediksi Indeks Harga Saham dengan Recurrent Neural Network
 [Achmad Maulana Gani](https://github.com/masgani)
 
-Update Log:
+Referensi Utama:
+1. Yujin  Baek  and  Ha  Young  Kim. Modaugnet:   A  new  forecasting  framework for  stock  market  index  value  with  an  overfitting  prevention  lstm  module  anda  prediction  lstm  module.Expert  Systems  with  Applications,  113:457  –  480,2018.   ISSN  0957-4174
+
+
+UPDATE LOG:
 
 [29 Agustus 2019]
 Berkas log.txt telah dibuat
@@ -27,3 +31,4 @@ Referensi awal untuk pembuatan modul
 [13 Oktober 2019]
 - penambahan fitur-fitur dalam algoritma untuk optimasi dan penambahan akurasi
 - Penulisan modul dengan menggunakan latex
+- Update referensi modul LSTM
