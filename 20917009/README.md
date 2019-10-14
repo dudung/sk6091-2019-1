@@ -32,3 +32,21 @@ Referensi awal untuk pembuatan modul
 - penambahan fitur-fitur dalam algoritma untuk optimasi dan penambahan akurasi
 - Penulisan modul dengan menggunakan latex
 - Update referensi modul LSTM
+
+[14 Oktober 2019]
+- Menyelesaikan bab dasar teori dengan format seperti berikut
+  1.1 Pengenalan Saham
+    1.1.1 Keuntungan Saham
+    1.1.2 Resiko Saham
+  1.2 Struktur Neural Network
+  1.3 Recurrent Neural Network
+    1.3.1 Pemrosesan Data Sekuensial
+    1.3.2 Definisi Recurrent Neural Network
+    1.3.3 Long Short-Term Memory (LSTM)
+  1.4 Perangkat Lunak Pendukung
+    1.4.1 Python
+    1.4.2 Numpy
+    1.4.3 Pandas
+    1.4.4 Matplotlib
+    1.4.5 Scikit-learn
+    1.4.6 Keras
