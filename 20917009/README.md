@@ -52,5 +52,5 @@ Referensi awal untuk pembuatan modul
     1.4.6 Keras
     
 [17 Oktober 2019]
--Menyelesaikan bab 2 mengenai tutorial dan bab 3 mengenai kesimpulan
--Draft modul, draft presentasi ppt, source code, dan dataset sudah di upload di folder modul
+- Menyelesaikan bab 2 mengenai tutorial dan bab 3 mengenai kesimpulan
+- Draft modul, draft presentasi ppt, source code, dan dataset sudah di upload di folder modul
