@@ -47,7 +47,7 @@ def trim_dataset(mat, batch_size):
 #--------------------------------------- ALGORITHMS ------------------------
 #load the data and prepare the constants
 BATCH_SIZE = 10
-PATH = '../Dataset/JKSEMax.csv'
+PATH = '../Dataset/BBCAMax.csv'
 stock_time_series = pd.read_csv(PATH)
 
 #------ Preprocessing -----
@@ -74,7 +74,8 @@ y_val, y_test_t = np.split(trim_dataset(y_temp, BATCH_SIZE), 2)
 #Build the model
 
 lstm_model = Sequential()
-lstm_model.add(LSTM(100, batch_input_shape=(BATCH_SIZE, 3, x_t.shape[2]), dropout=0.0, recurrent_dropout=0.0, stateful= True, kernel_initializer='random_uniform'))
+lstm_model.add(LSTM(100, batch_input_shape=(BATCH_SIZE, 3, x_t.shape[2]), dropout=0.0, recurrent_dropout=0.0, stateful= True,
+                    kernel_initializer='random_uniform'))
 lstm_model.add(Dropout(0.02))
 #lstm_model.add(Dense(20, activation='relu'))
 lstm_model.add(Dense(1, activation='linear'))
@@ -124,3 +125,7 @@ plt.legend(['Training Loss', 'Validation Loss'], loc='upper right')
 plt.show()
 """
 #forecasting attempt
+"""
+Check weight, 
+weights, biases = model.layers[0].get_weights()
+"""
