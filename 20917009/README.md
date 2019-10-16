@@ -35,9 +35,9 @@ Referensi awal untuk pembuatan modul
 
 [14 Oktober 2019]
 - Menyelesaikan bab dasar teori dengan format seperti berikut
-  1.1 Pengenalan Saham
-    1.1.1 Keuntungan Saham
-    1.1.2 Resiko Saham
+  - 1.1 Pengenalan Saham
+    - 1.1.1 Keuntungan Saham
+    - 1.1.2 Resiko Saham
   1.2 Struktur Neural Network
   1.3 Recurrent Neural Network
     1.3.1 Pemrosesan Data Sekuensial
