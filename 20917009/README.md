@@ -3,6 +3,8 @@
 
 Referensi Utama:
 1. Yujin  Baek  and  Ha  Young  Kim. Modaugnet:   A  new  forecasting  framework for  stock  market  index  value  with  an  overfitting  prevention  lstm  module  anda  prediction  lstm  module.Expert  Systems  with  Applications,  113:457  –  480,2018.   ISSN  0957-4174
+2. A. Géron, Hands-On Machine Learning with Scikit-Learn and TensorFlow, Kindle Edition, 1st, 450 pages 
+3. E. Birbeck, How To Build a Neural Network to Recognize Handwritten Digits with TensorFlow, artikel website, https://www.digitalocean.com/community/tutorials/how-to-build-a-neural-network-to-recognize-handwritten-digits-with-tensorflow
 
 
 UPDATE LOG:
